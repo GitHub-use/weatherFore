@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="100sp"
             android:layout_below="@id/info_show_image"
+            android:id="@+id/info_show_text"
             />
 
     </RelativeLayout>
