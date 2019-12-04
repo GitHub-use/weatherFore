@@ -3,13 +3,23 @@ package com.example.weatherfore;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,14 +40,16 @@ public class MainActivity extends AppCompatActivity {
     final int FINSH_NET_LOADING = 92;
 
 
-    private Handler han = new Handler(){
+    private Handler han = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if(msg.what==FINSH_NET_LOADING){
+            if (msg.what == FINSH_NET_LOADING) {
                 init();
             }
         }
     };
+
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 cityListList = GetWeatherInfo.getCityList();
@@ -54,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
 
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 weatherInfo = GetWeatherInfo.getWeatherInfo("");
@@ -71,6 +82,20 @@ public class MainActivity extends AppCompatActivity {
         TextView textView_info_ = findViewById(R.id.info_show_text);
         textView_info_.setText(weatherInfo.getHeWeather6().get(0).getNow().getFl());
         List<WeatherInfo.HeWeather6Bean.DailyForecastBean> tt = weatherInfo.getHeWeather6().get(0).getDaily_forecast();
+        LinearLayout scrollView = findViewById(R.id.weatherinfo_linearlayout);
+        scrollView.removeAllViews();
+        for(WeatherInfo.HeWeather6Bean.DailyForecastBean tempp : tt){
+            View view = getLayoutInflater().inflate(R.layout.weatherinfo,null);
+            TextView textView = view.findViewById(R.id.weatherinfo_day);
+            textView.setText(tempp.getDate());
+            ImageView imageView = view.findViewById(R.id.weatherinfo_image);
+            imageView.setImageResource(getResources().getIdentifier("p"+tempp.getCond_code_d(),"drawable",getPackageName()));
+            TextView textView1 = view.findViewById(R.id.weatherinfo_hig_tem);
+            textView1.setText(tempp.getTmp_max());
+            TextView textView2 = view.findViewById(R.id.weatherinfo_low_tem);
+            textView2.setText(tempp.getTmp_min());
+            scrollView.addView(view);
+        }
     }
 
     @Override
