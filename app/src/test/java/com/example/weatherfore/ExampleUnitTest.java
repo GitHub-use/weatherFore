@@ -2,6 +2,8 @@ package com.example.weatherfore;
 
 import com.example.weatherfore.model.CityList;
 import com.example.weatherfore.model.CityNextList;
+import com.example.weatherfore.model.LocalId;
+import com.example.weatherfore.model.WeatherInfo;
 import com.example.weatherfore.util.GetWeatherInfo;
 
 import org.junit.Test;
@@ -20,14 +22,22 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
-        List<CityNextList> cityLists = null;
+        List<LocalId> cityLists = null;
         try {
-            cityLists = GetWeatherInfo.getCityNext(2);
+            cityLists = GetWeatherInfo.getLocalId(2,2);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(cityLists.get(0).getName());
+        for(LocalId temp : cityLists){
+            System.out.println(temp.getWeather_id());
+        }
+        WeatherInfo weatherInfo = GetWeatherInfo.getWeatherInfo("CN101021200");
+        if(weatherInfo!=null){
+            System.out.println(weatherInfo.getHeWeather6().get(0).getNow().getWind_dir());
+        }else{
+            System.out.println("数据获取错误");
+        }
 
     }
 }

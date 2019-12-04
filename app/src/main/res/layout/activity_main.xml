@@ -40,5 +40,11 @@
         android:id="@+id/list_view_info_show"
         android:orientation="horizontal"
         />
+    <FrameLayout
+        android:layout_width="300sp"
+        android:layout_height="400sp"
+        android:id="@+id/main_layout_fragment"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
