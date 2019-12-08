@@ -6,7 +6,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30sp"
-        android:id="@+id/weatherinfo_day"/>
+        android:id="@+id/weatherinfo_day"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        />
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="100sp"
@@ -17,11 +21,16 @@
         android:layout_height="30sp"
         android:gravity="center"
         android:id="@+id/weatherinfo_hig_tem"
+        android:textColor="#E41212"
+        android:textSize="15sp"
         />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30sp"
         android:id="@+id/weatherinfo_low_tem"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="#464AC4"
+        android:textSize="15sp"
+        />
 
 </LinearLayout>

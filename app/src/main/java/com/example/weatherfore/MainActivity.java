@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -27,6 +28,13 @@ import com.example.weatherfore.model.CityList;
 import com.example.weatherfore.model.WeatherInfo;
 import com.example.weatherfore.util.GetWeatherInfo;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,29 @@ public class MainActivity extends AppCompatActivity {
                 weatherInfo = GetWeatherInfo.getWeatherInfo("");
             }
         }.start();
+        FileInputStream in = null;
+        BufferedReader reader = null ;
+        StringBuilder sb = new StringBuilder();
+        try{
+            in = openFileInput("dat");
+            reader  = new BufferedReader(new InputStreamReader(in));
+            String tt = null;
+            while ((tt = reader.readLine())!=null){
+                sb.append(tt);
+            }
+            if(sb.length()!=0){
+            getWeatherInfo(sb.toString());}
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                reader.close();
+                in.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void init(){
@@ -130,5 +161,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("MainActivity", "onDestroy:Destroy ");
+        FileOutputStream outputStream = null;
+        BufferedWriter writer = null;
+        try{
+            outputStream = openFileOutput("dat",Context.MODE_PRIVATE);
+            writer= new BufferedWriter(new OutputStreamWriter(outputStream));
+            writer.write(weatherInfo.getHeWeather6().get(0).getBasic().getCid());
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                writer.close();
+                outputStream.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
